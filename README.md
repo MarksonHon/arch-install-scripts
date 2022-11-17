@@ -11,7 +11,5 @@ bash -c "$(curl -sL "https://github.com/MarksonHon/arch-install-scripts/raw/main
 For short type in:
 
 ```sh
-bash -c "$(curl -sL "https://t.ly/zVUX")"
-## or
-### bash -c "$(curl -sL "shorturl.at/alPZ1")"
+bash -c "$(curl -sL "https://t.ly/L7II")"
 ```
