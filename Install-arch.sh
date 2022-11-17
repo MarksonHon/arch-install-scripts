@@ -37,14 +37,15 @@ echo "${YELLOW}Add Arch Linux CN repo${RESET}"
 arch-chroot /mnt /bin/bash -c "echo \"[archlinuxcn]\" >> /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/archcn-mirrors' >> /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "curl -Ls \"https://github.com/MarksonHon/arch-install-scripts/raw/main/archcn-mirrors\" --output /etc/pacman.d/archcn-mirrors"
-arch-chroot /mnt /bin/bash -c "pacman -Sy && pacman -S archlinuxcn-keyring"
+arch-chroot /mnt /bin/bash -c "pacman -Sy && pacman -S archlinuxcn-keyring --noconfirm"
 
 echo "${YELLOW}Install fonts${RESET}"
 arch-chroot /mnt /bin/bash -c "pacman -S noto-fonts noto-fonts-extra adobe-source-han-sans-otc-fonts adobe-source-han-mono-otc-fonts adobe-source-han-serif-otc-fonts noto-fonts-emoji --noconfirm"
 
 echo "${YELLOW}Add User${RESET}"
+echo "Input your name:"
 read user_name
-echo echo "${GREEN} Your username is $user_name ${RESET}"
+echo "${GREEN} Your username is $user_name ${RESET}"
 arch-chroot /mnt /bin/bash -c "useradd -G wheel -m $user_name"
 arch-chroot /mnt /bin/bash -c "passwd $user_name"
 
