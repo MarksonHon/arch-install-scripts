@@ -24,7 +24,7 @@ pacstrap /mnt noto-fonts noto-fonts-extra adobe-source-han-sans-otc-fonts adobe-
 echo "${YELLOW}install grub${RESET}"
 pacstrap /mnt grub efibootmgr os-prober breeze-grub
 echo 'GRUB_THEME="/usr/share/grub/themes/breeze/theme.txt"' >> "/mnt/etc/default/grub"
-arch-chroot "grub-install; grub-mkconfig -o /boot/grub/grub.cfg"
+arch-chroot /mnt /bin/bash -c "grub-install; grub-mkconfig -o /boot/grub/grub.cfg"
 echo "${GREEN} GRUB_DISABLE_OS_PROPBER set \"ture\" defaultly.${RESET}"
 echo "${GREEN} If you want to boot Windows through GRUB,${RESET}"
 echo "${GREEN} Set GRUB_DISABLE_OS_PROPBER to \"false\" in \`/etc/default/grub\`,${RESET}"
