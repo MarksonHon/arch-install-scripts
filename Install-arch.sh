@@ -14,8 +14,9 @@ if [ ! -n "$UCODECHECK" ]; then
     UCODE="intel-ucode"
 fi
 
-pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware "$UCODE"
+pacstrap /mnt base base-devel sudo wget curl nano htop neofetch linux-zen linux-zen-headers linux-firmware "$UCODE"
 genfstab -U /mnt >> /mnt/etc/fstab
+sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /mnt/etc/sudoers
 
 echo "${YELLOW}Install fonts${RESET}"
 pacstrap /mnt noto-fonts noto-fonts-extra adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts noto-fonts-emoji
@@ -30,17 +31,22 @@ echo "${GREEN} Set GRUB_DISABLE_OS_PROPBER to \"false\" in \`/etc/default/grub\`
 echo "${GREEN} then run \`grub-mkconfig -o /boot/grub/grub.cfg\` again. ${RESET}"
 
 echo "${YELLOW}install KDE Plasma${RESET}"
-arch-chroot /mnt /bin/bash -c "pacman -S plasma kde-system ark dolphin kate sddm plasma-wayland-session sudo egl-wayland; systemctl enable sddm; systemctl enable NetworkManager; systemctl enable bluetooth"
+arch-chroot /mnt /bin/bash -c "pacman -S plasma kde-system ark dolphin kate sddm plasma-wayland-session egl-wayland; systemctl enable sddm; systemctl enable NetworkManager; systemctl enable bluetooth"
 
 echo "${YELLOW}install fcitx5${RESET}"
 pacstrap /mnt fcitx5-im fcitx5-chinese-addons
 
 echo "${YELLOW}Add Arch Linux CN repo${RESET}"
-CNMIRRORS = ' ## Arch Linux CN repo mirrors
+arch-chroot /mnt /bin/bash -c "echo \"[archlinuxcn]\" >> /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/archcn-mirrors' >> /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "curl -Ls \"https://github.com/MarksonHon/arch-install-scripts/raw/main/archcn-mirrors\" --output /etc/pacman.d/archcn-mirrors"
+arch-chroot /mnt /bin/bash -c "pacman -Sy && pacman -S archlinuxcn-keyring"
 
-'
-ARCHLINUXCN {
-    echo "[archlinuxcn]" >> /etc/pacman.conf
-    echo 'Include = /etc/pacman.d/archcn-mirrors' >> /etc/pacman.conf
-}
-sudo pacman -Sy && sudo pacman -S archlinuxcn-keyring
+echo "${YELLOW}Add User${RESET}"
+read user_name
+echo echo "${GREEN} Your username is $user_name ${RESET}"
+arch-chroot /mnt /bin/bash -c "useradd -G wheel -m $user_name"
+arch-chroot /mnt /bin/bash -c "passwd $user_name"
+
+arch-chroot /mnt /bin/bash -c "curl -Ls \"https://github.com/MarksonHon/arch-install-scripts/raw/main/first-boot.service\" --output /etc/systemd/system/first-boot.service"
+arch-chroot /mnt /bin/bash -c "systemctl enable first-boot.service"
