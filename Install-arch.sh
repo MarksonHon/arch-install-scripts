@@ -18,9 +18,6 @@ pacstrap /mnt base base-devel sudo wget curl nano htop neofetch linux-zen linux-
 genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /mnt/etc/sudoers
 
-echo "${YELLOW}Install fonts${RESET}"
-pacstrap /mnt noto-fonts noto-fonts-extra adobe-source-han-sans-otc-fonts adobe-source-han-serif-otc-fonts noto-fonts-emoji
-
 echo "${YELLOW}install grub${RESET}"
 pacstrap /mnt grub efibootmgr os-prober breeze-grub
 echo 'GRUB_THEME="/usr/share/grub/themes/breeze/theme.txt"' >> "/mnt/etc/default/grub"
@@ -42,11 +39,21 @@ arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/archcn-mirrors' >> 
 arch-chroot /mnt /bin/bash -c "curl -Ls \"https://github.com/MarksonHon/arch-install-scripts/raw/main/archcn-mirrors\" --output /etc/pacman.d/archcn-mirrors"
 arch-chroot /mnt /bin/bash -c "pacman -Sy && pacman -S archlinuxcn-keyring"
 
+echo "${YELLOW}Install fonts${RESET}"
+arch-chroot /mnt /bin/bash -c "pacman -S noto-fonts noto-fonts-extra adobe-source-han-sans-otc-fonts adobe-source-han-mono-otc-fonts adobe-source-han-serif-otc-fonts noto-fonts-emoji --noconfirm"
+
 echo "${YELLOW}Add User${RESET}"
 read user_name
 echo echo "${GREEN} Your username is $user_name ${RESET}"
 arch-chroot /mnt /bin/bash -c "useradd -G wheel -m $user_name"
 arch-chroot /mnt /bin/bash -c "passwd $user_name"
 
-arch-chroot /mnt /bin/bash -c "curl -Ls \"https://github.com/MarksonHon/arch-install-scripts/raw/main/first-boot.service\" --output /etc/systemd/system/first-boot.service"
-arch-chroot /mnt /bin/bash -c "systemctl enable first-boot.service"
+echo "${YELLOW}Set locale and timezone${RESET}"
+arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime"
+arch-chroot /mnt /bin/bash -c "hwclock --systohc"
+arch-chroot /mnt /bin/bash -c "sed -i 's/#zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen"
+arch-chroot /mnt /bin/bash -c "echo 'LANG=zh_CN.UTF-8' > /etc/locale.conf"
+
+echo "${YELLOW}Set fonts config${RESET}"
+curl -sL "https://github.com/MarksonHon/arch-install-scripts/raw/main/fonts-config.xml" --output "/mnt/etc/fonts/conf.d/70-adobe-han.conf"
+cat "/mnt/etc/fonts/conf.d/70-adobe-han.conf"
