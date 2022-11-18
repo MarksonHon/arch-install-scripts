@@ -28,7 +28,7 @@ echo "${GREEN} Set GRUB_DISABLE_OS_PROPBER to \"false\" in \`/etc/default/grub\`
 echo "${GREEN} then run \`grub-mkconfig -o /boot/grub/grub.cfg\` again. ${RESET}"
 
 echo "${YELLOW}install KDE Plasma${RESET}"
-arch-chroot /mnt /bin/bash -c "pacman -S plasma kde-system ark dolphin kate sddm plasma-wayland-session egl-wayland --noconfirm; systemctl enable sddm; systemctl enable NetworkManager; systemctl enable bluetooth"
+arch-chroot /mnt /bin/bash -c "pacman -S plasma kde-system kde-utilities kde-graphics plasma-wayland-session egl-wayland --noconfirm; systemctl enable sddm; systemctl enable NetworkManager; systemctl enable bluetooth"
 
 echo "${YELLOW}install fcitx5${RESET}"
 pacstrap /mnt fcitx5-im fcitx5-chinese-addons
@@ -56,7 +56,8 @@ arch-chroot /mnt /bin/bash -c "sed -i 's/#zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' 
 arch-chroot /mnt /bin/bash -c "echo 'LANG=zh_CN.UTF-8' > /etc/locale.conf"
 
 echo "${YELLOW}Set fonts config${RESET}"
-curl -sL "https://github.com/MarksonHon/arch-install-scripts/raw/main/fonts-config.xml" --output "/mnt/etc/fonts/conf.d/70-adobe-han.conf"
+pacman -S unzip --noconfirm
+curl -L "https://github.com/MarksonHon/arch-install-scripts/raw/main/fonts-config.xml" --output "/mnt/etc/fonts/conf.d/70-adobe-han.conf"
 curl -L "https://github.com/adobe-fonts/source-han-serif/releases/download/2.001R/01_SourceHanSerif.ttc.zip" --output "./SourceHanSerif.ttc.zip"
 mkdir -p "/mnt/usr/local/share/fonts/SourceHanSerif/" && unzip "./SourceHanSerif.ttc.zip" -d "/mnt//usr/local/share/fonts/SourceHanSerif/" && rm "./SourceHanSerif.ttc.zip"
 curl -L "https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSans.ttc.zip" --output "./SourceHanSans.ttc.zip"

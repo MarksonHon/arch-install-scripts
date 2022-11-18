@@ -9,7 +9,7 @@
             <string>serif</string>
         </test>
         <edit name="family" mode="prepend">
-            <string>Source Han Serif JP</string>
+            <string>Source Han Serif</string>
         </edit>
     </match>
 
@@ -21,7 +21,7 @@
             <string>serif</string>
         </test>
         <edit name="family" mode="prepend">
-            <string>Source Han Serif KR</string>
+            <string>Source Han Serif K</string>
         </edit>
     </match>
 
@@ -69,7 +69,7 @@
             <string>sans-serif</string>
         </test>
         <edit name="family" mode="prepend">
-            <string>Source Han Sans JP</string>
+            <string>Source Han Sans</string>
         </edit>
     </match>
 
@@ -81,7 +81,7 @@
             <string>sans-serif</string>
         </test>
         <edit name="family" mode="prepend">
-            <string>Source Han Sans KR</string>
+            <string>Source Han Sans K</string>
         </edit>
     </match>
 
@@ -129,7 +129,7 @@
             <string>monospace</string>
         </test>
         <edit name="family" mode="prepend">
-            <string>Source Han Mono JP</string>
+            <string>Source Han Mono J</string>
         </edit>
     </match>
 
@@ -141,7 +141,7 @@
             <string>monospace</string>
         </test>
         <edit name="family" mode="prepend">
-            <string>Source Han Mono KR</string>
+            <string>Source Han Mono K</string>
         </edit>
     </match>
 
