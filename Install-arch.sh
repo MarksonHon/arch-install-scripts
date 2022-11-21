@@ -32,6 +32,13 @@ arch-chroot /mnt /bin/bash -c "pacman -S plasma kde-system kde-utilities kde-gra
 
 echo "${YELLOW}install fcitx5${RESET}"
 pacstrap /mnt fcitx5-im fcitx5-chinese-addons
+echo 'if [ ! "$XDG_SESSION_TYPE" = "tty" ]
+then
+    export INPUT_METHOD=fcitx5
+    export GTK_IM_MODULE=fcitx5
+    export QT_IM_MODULE=fcitx5
+    export XMODIFIERS=@im=fcitx5
+fi' > /mnt/etc/profile.d/fcitx5.sh
 
 echo "${YELLOW}Add Arch Linux CN repo${RESET}"
 arch-chroot /mnt /bin/bash -c "echo \"[archlinuxcn]\" >> /etc/pacman.conf"
