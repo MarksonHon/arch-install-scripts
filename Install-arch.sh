@@ -14,7 +14,7 @@ if [ ! -n "$UCODECHECK" ]; then
     UCODE="intel-ucode"
 fi
 
-pacstrap /mnt base base-devel sudo wget curl nano htop neofetch linux-zen linux-zen-headers linux-firmware intel-media-driver libva-mesa-driver libva-utils "$UCODE"
+pacstrap /mnt base base-devel sudo wget curl nano htop dnsutils neofetch linux-zen linux-zen-headers linux-firmware intel-media-driver libva-mesa-driver libva-utils "$UCODE"
 genfstab -U /mnt >> /mnt/etc/fstab
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /mnt/etc/sudoers
 
