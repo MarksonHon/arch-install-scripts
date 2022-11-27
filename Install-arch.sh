@@ -46,9 +46,6 @@ arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/archcn-mirrors' >> 
 arch-chroot /mnt /bin/bash -c "curl -Ls \"https://github.com/MarksonHon/arch-install-scripts/raw/main/archcn-mirrors\" --output /etc/pacman.d/archcn-mirrors"
 arch-chroot /mnt /bin/bash -c "pacman -Sy && pacman -S archlinuxcn-keyring --noconfirm"
 
-echo "${YELLOW}Install fonts${RESET}"
-arch-chroot /mnt /bin/bash -c "pacman -S noto-fonts noto-fonts-extra --noconfirm"
-
 echo "${YELLOW}Add User${RESET}"
 echo "Input your name:"
 read user_name
@@ -62,7 +59,8 @@ arch-chroot /mnt /bin/bash -c "hwclock --systohc"
 arch-chroot /mnt /bin/bash -c "sed -i 's/#zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen"
 arch-chroot /mnt /bin/bash -c "echo 'LANG=zh_CN.UTF-8' > /etc/locale.conf"
 
-echo "${YELLOW}Set fonts config${RESET}"
+echo "${YELLOW}Install fonts${RESET}"
+arch-chroot /mnt /bin/bash -c "pacman -S noto-fonts noto-fonts-extra --noconfirm"
 pacman -S unzip --noconfirm
 curl -L "https://github.com/MarksonHon/arch-install-scripts/raw/main/fonts-config.xml" --output "/mnt/etc/fonts/conf.d/70-adobe-han.conf"
 curl -L "https://github.com/adobe-fonts/source-han-serif/releases/download/2.001R/01_SourceHanSerif.ttc.zip" --output "./SourceHanSerif.ttc.zip"
@@ -70,3 +68,10 @@ mkdir -p "/mnt/usr/local/share/fonts/SourceHanSerif/" && unzip "./SourceHanSerif
 curl -L "https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSans.ttc.zip" --output "./SourceHanSans.ttc.zip"
 mkdir -p "/mnt/usr/local/share/fonts/SourceHanSans/" && unzip "./SourceHanSans.ttc.zip" -d "/mnt/usr/local/share/fonts/SourceHanSans" && rm "./SourceHanSans.ttc.zip"
 mkdir -p "/mnt/usr/local/share/fonts/SourceHanMono" && curl -L "https://github.com/adobe-fonts/source-han-mono/releases/download/1.002/SourceHanMono.ttc" --output "/mnt/usr/local/share/fonts/SourceHanMono/SourceHanMono.ttc"
+
+echo "${YELLOW}Add printer support${RESET}"
+pacstrap /mnt foomatic-db-gutenprint-ppds foomatic-db-nonfree-ppds foomatic-db-ppds cups system-config-printer bluez-cups
+arch-chroot /mnt /bin/bash -c "systemctl enable cups"
+
+echo "${YELLOW}Install firefox${RESET}"
+pacstrap /mnt firefox firefox-i18n-zh-cn
