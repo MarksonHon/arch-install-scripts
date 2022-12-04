@@ -64,7 +64,7 @@ arch-chroot /mnt /bin/bash -c "pacman -S noto-fonts noto-fonts-extra --noconfirm
 pacman -S unzip --noconfirm
 curl -L "https://github.com/MarksonHon/arch-install-scripts/raw/main/fonts-config.xml" --output "/mnt/etc/fonts/conf.d/70-adobe-han.conf"
 curl -L "https://github.com/adobe-fonts/source-han-serif/releases/download/2.001R/01_SourceHanSerif.ttc.zip" --output "./SourceHanSerif.ttc.zip"
-mkdir -p "/mnt/usr/local/share/fonts/SourceHanSerif/" && unzip "./SourceHanSerif.ttc.zip" -d "/mnt//usr/local/share/fonts/SourceHanSerif/" && rm "./SourceHanSerif.ttc.zip"
+mkdir -p "/mnt/usr/local/share/fonts/SourceHanSerif/" && unzip "./SourceHanSerif.ttc.zip" -d "/mnt/usr/local/share/fonts/SourceHanSerif/" && rm "./SourceHanSerif.ttc.zip"
 curl -L "https://github.com/adobe-fonts/source-han-sans/releases/download/2.004R/SourceHanSans.ttc.zip" --output "./SourceHanSans.ttc.zip"
 mkdir -p "/mnt/usr/local/share/fonts/SourceHanSans/" && unzip "./SourceHanSans.ttc.zip" -d "/mnt/usr/local/share/fonts/SourceHanSans" && rm "./SourceHanSans.ttc.zip"
 mkdir -p "/mnt/usr/local/share/fonts/SourceHanMono" && curl -L "https://github.com/adobe-fonts/source-han-mono/releases/download/1.002/SourceHanMono.ttc" --output "/mnt/usr/local/share/fonts/SourceHanMono/SourceHanMono.ttc"
@@ -75,3 +75,8 @@ arch-chroot /mnt /bin/bash -c "systemctl enable cups"
 
 echo "${YELLOW}Install firefox${RESET}"
 pacstrap /mnt firefox firefox-i18n-zh-cn
+
+echo "${YELLOW}Set udisks using ntfs3${RESET}"
+echo "[defaults]
+ntfs_defaults=uid=$UID,gid=$GID,noatime,prealloc
+" > /mnt/etc/udisks2/mount_options.conf
